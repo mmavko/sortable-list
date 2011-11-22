@@ -6,7 +6,7 @@ Sort = (function () {
 		}
 	}
 	function Sort (el, options) {
-		$.extend(this, this.constructor.defaultOptions, options);
+		$.extend(this, arguments.callee.defaultOptions, options);
 		this.$list = $(el).first();
 		this.refreshItems();
 		this.$items.css('position', 'relative');
@@ -21,7 +21,9 @@ Sort = (function () {
 		});
 	};
 	Sort.defaultOptions = {
-		itemsSelector: 'li'
+		itemsSelector: 'li',
+		browserPrefix: '-webkit-',
+		transitionDuration: '0.1'
 	};
 	Sort.prototype = {
 		refreshItems: function () {
@@ -46,7 +48,7 @@ Sort = (function () {
 			delete this.y1;
 		},
 		start: function () {
-			this.$items.not(this.$target).css('-webkit-transition', 'top 0.1s');
+			this.$items.not(this.$target).css(this.browserPrefix+'transition', 'top '+this.transitionDuration+'s');
 			this.$target.css('z-index', 1);
 			// store target index
 			this.ti = this.$items.index(this.$target);
@@ -75,9 +77,9 @@ Sort = (function () {
 			this.$items.css({
 				top: '',
 				left: '',
-				'-webkit-transition': '',
 				'z-index': ''
 			});
+			this.$items.css(this.browserPrefix+'transition', '');
 			var
 				ci = this.ti + this.di,
 				maxi = this.$items.length-1,
