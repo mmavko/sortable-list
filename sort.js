@@ -10,7 +10,8 @@ Sort = (function () {
 		this.$list = $(el).first();
 		this.refreshItems();
 		this.$items.css('position', 'relative');
-		this.height = this.$items.get(1).offsetTop - this.$items.get(0).offsetTop;
+		if (this.$items.length > 1) this.height = this.$items.get(1).offsetTop - this.$items.get(0).offsetTop;
+		else this.height = 0;
 		$(document).on({
 			mousemove: _bind(this.onMouseMove, this),
 			mouseup: _bind(this.onMouseUp, this)
