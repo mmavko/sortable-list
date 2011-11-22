@@ -1,46 +1,38 @@
 
-
 Sort = (function () {
 	function _bind(f, scope) {
 		return function () {
 			f.apply(scope, arguments);
 		}
 	}
-	var constructor = function (el, options) {
+	function Sort (el, options) {
 		$.extend(this, this.constructor.defaultOptions, options);
-		this.$list = $(el).first().css({position: 'relative'})
-			.on({
-				mousemove: _bind(this.onMouseMove, this),
-				mouseup: _bind(this.onMouseUp, this),
-				mouseout: _bind(this.onMouseOut, this)
-			});
-		this.$items = this.$list.children(this.itemsSelector)
-			.on({
-				mousedown: _bind(this.onMouseDown, this)
-			});
+		this.$list = $(el).first().css({position: 'relative'});
+		$(document).on({
+			mousemove: _bind(this.onMouseMove, this),
+			mouseup: _bind(this.onMouseUp, this)
+		});
+		this.refreshItems();
+		this.$items.on({
+			mousedown: _bind(this.onMouseDown, this)
+		});
 		this.$items.last().after(this.$items.last().clone().css('display', 'none'));
-		this.$items = this.$list.children(this.itemsSelector);
+		this.refreshItems();
 		this.height = this.$items.get(1).offsetTop - this.$items.get(0).offsetTop;
 	};
-	constructor.defaultOptions = {
+	Sort.defaultOptions = {
 		itemsSelector: 'li'
 	};
-	constructor.prototype = {
+	Sort.prototype = {
+		refreshItems: function () {
+			this.$items = this.$list.children(this.itemsSelector);
+		},
 		onMouseDown: function (e) {
 			this.$target = $(e.target);
-			this.$placeholder = this.$target.clone().html('&nbsp;');
-			this.$target.css({
-				width: this.$target.css('width'),
-				position: 'absolute'
-			});
-			$.extend(this, this.$target.position());
-			if (this.$items.index(this.$target.get(0)) == 0) this.$target.css('margin-top', 0);
-			this.$target.css({
-				top: this.top,
-				left: this.left
-			}).before(this.$placeholder);
 			this.x1 = e.pageX;
 			this.y1 = e.pageY;
+			this.start();
+			e.preventDefault();
 		},
 		onMouseMove: function (e) {
 			if (!this.$target) return;
@@ -55,50 +47,56 @@ Sort = (function () {
 			if (di !== this.lastDi) this.move(di);
 			this.lastDi = di;
 		},
-		onMouseOut: function (e) {
-			this.cancel();
-		},
 		onMouseUp: function (e) {
+			if (!this.$target) return;
 			this.end();
 		},
+		start: function () {
+			this.$placeholder = this.$target.clone().html('&nbsp;');
+			var staticPos = this.$target.position();
+			this.$target.css({
+				width: this.$target.css('width'),
+				position: 'absolute'
+			});
+			$.extend(this, this.$target.position());
+			// include collapsed margins if any
+			if (staticPos.top < 0) this.top += staticPos.top;
+			this.$target.css({
+				top: this.top,
+				left: this.left
+			}).before(this.$placeholder);
+		},
 		move: function (di) {
+			// skip target item
 			if (di > 0) di++;
-			this.$placeholder.detach();
 			var
 				i = this.$items.index(this.$target.get(0)),
-				current, ci;
-			if (i+di < 0) ci = 0;
-			else if (i+di >= this.$items.length) ci = this.$items.length-1;
-			else ci = i+di;
+				current, ci = i + di,
+				maxi = this.$items.length-1;
+			// move placeholder
+			this.$placeholder.detach();
+			if (ci < 0) ci = 0;
+			if (i+di > maxi) ci = maxi;
 			current = this.$items.get(ci);
 			$(current).before(this.$placeholder);
 		},
-		cancel: function () {
-			if (!this.$target) return;
+		end: function () {
+			this.$target.detach();
+			this.$placeholder.before(this.$target);
+			this.stop();
+			this.refreshItems();
+		},
+		stop: function () {
 			this.$placeholder.remove();
 			this.$target.css({
 				position: '',
 				top: '',
 				left: '',
-				'margin-top': '',
 				width: ''
 			});
 			delete this.$placeholder;
 			delete this.$target;
-		},
-		end: function () {
-			if (!this.$target) return;
-			this.$target.detach();
-			this.$placeholder.before(this.$target);
-			this.cancel();
-			this.$items = this.$list.children(this.itemsSelector);
 		}
 	};
-	return constructor;
+	return Sort;
 })();
-
-
-
-$(function () {
-	new Sort($('ul#list'));
-});
