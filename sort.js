@@ -9,7 +9,6 @@ Sort = (function () {
 		$.extend(this, arguments.callee.defaultOptions, options);
 		this.$list = $(el).first();
 		this.refreshItems();
-		this.$items.css('position', 'relative');
 		if (this.$items.length > 1) this.height = this.$items.get(1).offsetTop - this.$items.get(0).offsetTop;
 		else this.height = 0;
 		$(document).on({
@@ -48,6 +47,7 @@ Sort = (function () {
 			delete this.y1;
 		},
 		start: function () {
+			this.$items.css('position', 'relative');
 			this.$items.not(this.$target).css(this.browserPrefix+'transition', 'top '+this.transitionDuration+'s');
 			this.$target.css('z-index', 1);
 			// store target index
@@ -75,11 +75,11 @@ Sort = (function () {
 		},
 		end: function () {
 			this.$items.css({
+				position: '',
 				top: '',
 				left: '',
 				'z-index': ''
-			});
-			this.$items.css(this.browserPrefix+'transition', '');
+			}).css(this.browserPrefix+'transition', '');
 			var
 				ci = this.ti + this.di,
 				maxi = this.$items.length-1,
