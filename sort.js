@@ -84,7 +84,7 @@ Sort = (function () {
 			if (ci < 0) ci = 0;
 			if (ci > maxi) ci = maxi;
 			if (this.di < 0) func = 'before';
-			if (this.di !== 0) $(this.$items.get(ci))[func](this.$target);
+			if (ci !== this.ti) $(this.$items.get(ci))[func](this.$target);
 			delete this.di;
 			delete this.ti;
 			this.refreshItems();
