@@ -5,6 +5,14 @@
 
   <title>mmavko/sortable-list @ GitHub</title>
 
+  <script src="http://code.jquery.com/jquery-1.7.min.js"></script>
+  <script src="sort.js"></script>
+  <script>
+	$(function () {
+		new Sort($('ul#list'));
+	});
+  </script>
+
   <style type="text/css">
     body {
       margin-top: 1.0em;
@@ -27,6 +35,19 @@
     pre { background: #000; color: #fff; padding: 15px;}
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
+
+	ul#list {
+		list-style: none;
+		width: 400px;
+		padding: 0;
+	}
+	ul#list li {
+		margin: 10px;
+		padding: 5px;
+		border: 1px solid #ccc;
+		background-color: #eee;
+	}
+
   </style>
 </head>
 
@@ -46,18 +67,26 @@
       <span class="small">by <a href="https://github.com/mmavko">mmavko</a></span></h1>
 
     <div class="description">
-      Javascript Sortable List
+      JavaScript Sortable List
     </div>
 
     
       <p>Sortable list implementation based on jQuery (Zepto?) that uses CSS3 transitions.</p>
     
 
-    
+    <h2>Live demo</h2>
 
-    
+    <p>Note: script is set up to work in WebKit browser.</p>
 
-    
+	<ul id="list">
+		<li>item 1</li>
+		<li>item 2</li>
+		<li>item 3</li>
+		<li>item 4</li>
+		<li>item 5</li>
+		<li>item 6</li>
+		<li>item 7</li>
+	</ul>
 
     
 
