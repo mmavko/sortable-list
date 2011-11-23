@@ -1,6 +1,12 @@
 
 class Sortable
 		
+	@defaultOptions:
+		itemSelector: 'li'
+		triggerSelector: ''
+		browserPrefix: '-webkit-'
+		transitionDuration: '0.1'
+
 	constructor: (el, options) ->
 		$.extend @, Sortable.defaultOptions, options
 		@$list = $(el).first()
@@ -9,12 +15,6 @@ class Sortable
 			mouseup: @onMouseUp
 		@$list.delegate "#{@itemSelector} #{@triggerSelector}", 'mousedown', @onMouseDown
 		
-	@defaultOptions:
-		itemSelector: 'li'
-		triggerSelector: ''
-		browserPrefix: '-webkit-'
-		transitionDuration: '0.1'
-
 	refreshItems: ->
 		@$items = @$list.find @itemSelector
 		if @$items.length > 1

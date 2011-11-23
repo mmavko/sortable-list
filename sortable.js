@@ -4,6 +4,13 @@
 
   Sortable = (function() {
 
+    Sortable.defaultOptions = {
+      itemSelector: 'li',
+      triggerSelector: '',
+      browserPrefix: '-webkit-',
+      transitionDuration: '0.1'
+    };
+
     function Sortable(el, options) {
       this.onMouseUp = __bind(this.onMouseUp, this);
       this.onMouseMove = __bind(this.onMouseMove, this);
@@ -15,13 +22,6 @@
       });
       this.$list.delegate("" + this.itemSelector + " " + this.triggerSelector, 'mousedown', this.onMouseDown);
     }
-
-    Sortable.defaultOptions = {
-      itemSelector: 'li',
-      triggerSelector: '',
-      browserPrefix: '-webkit-',
-      transitionDuration: '0.1'
-    };
 
     Sortable.prototype.refreshItems = function() {
       this.$items = this.$list.find(this.itemSelector);
