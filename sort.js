@@ -6,7 +6,7 @@ Sort = (function () {
 		}
 	}
 	function Sort (el, options) {
-		$.extend(this, arguments.callee.defaultOptions, options);
+		$.extend(this, Sort.defaultOptions, options);
 		this.$list = $(el).first();
 		this.refreshItems();
 		if (this.$items.length > 1) this.height = this.$items.get(1).offsetTop - this.$items.get(0).offsetTop;
