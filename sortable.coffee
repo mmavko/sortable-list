@@ -84,6 +84,7 @@ class Sortable
 		maxi = @$items.length - 1
 		ci = 0    if ci < 0
 		ci = maxi if ci > maxi
+		# move item
 		if @di < 0 then func = 'before' else func = 'after'
 		$(@$items.get ci)[func] @$target unless ci is @ti
 		delete @di
