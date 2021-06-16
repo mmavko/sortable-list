@@ -69,7 +69,7 @@ class Sortable
 			switch yes
 				when i >= ci and i < @ti then top =	 @height
 				when i <= ci and i > @ti then top = -@height
-				else top = ''
+				else top = '0'
 			$(item).css 'top', top
 
 	end: ->
