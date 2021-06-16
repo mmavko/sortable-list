@@ -126,4 +126,4 @@
     this.Sortable = Sortable;
   }
 
-}).call(this);
+}).call(window);
