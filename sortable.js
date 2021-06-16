@@ -88,7 +88,7 @@
             top = -_this.height;
             break;
           default:
-            top = '';
+            top = '0';
         }
         return $(item).css('top', top);
       });
